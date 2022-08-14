@@ -1,0 +1,431 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "contact": {
+      "email": "example@example.com"
+    },
+    "description": "tech-blogのAPIインタフェース定義",
+    "title": "tech-blogのAPIインタフェース定義",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "article",
+      "description": "記事"
+    }
+  ],
+  "paths": {
+    "/api/v1/articles": {
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "記事一覧取得",
+        "description": "記事一覧取得する",
+        "operationId": "getArticles",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/limit"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getArticlesResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400Response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "article"
+        ],
+        "summary": "記事登録",
+        "description": "記事を登録する",
+        "operationId": "postArticle",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/postArticlesRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/postArticlesResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400Response"
+          }
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}": {
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "記事の詳細取得",
+        "description": "記事の詳細情報を取得する",
+        "operationId": "getArticleDetail",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/articleId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getArticleDetailResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400Response"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "article"
+        ],
+        "summary": "記事更新",
+        "description": "記事を更新する",
+        "operationId": "putArticle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/articleId"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/putArticleRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/putArticleResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400Response"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "article"
+        ],
+        "summary": "記事削除",
+        "description": "記事を削除する",
+        "operationId": "deleteArticle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/articleId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/deleteArticleResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/400Response"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "getArticlesResponse": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "description": "データ件数",
+            "type": "integer",
+            "format": "int64",
+            "example": 15
+          },
+          "data": {
+            "description": "記事",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ArticleItem"
+            }
+          }
+        }
+      },
+      "ArticleItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "記事ID",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "description": "タイトル",
+            "type": "string",
+            "example": "記事のタイトル"
+          },
+          "updated_at": {
+            "description": "記事の更新日",
+            "type": "string",
+            "example": "2022-01-01"
+          }
+        }
+      },
+      "ArticleDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "記事ID",
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "description": "タイトル",
+            "type": "string",
+            "example": "記事のタイトル"
+          },
+          "description": {
+            "description": "記事の内容",
+            "type": "string",
+            "example": "記事の内容記事の内容記事の内容"
+          },
+          "topics": {
+            "description": "記事のトピックIDのリスト",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": [
+              1,
+              2,
+              3
+            ]
+          },
+          "updated_at": {
+            "description": "記事の更新日",
+            "type": "string",
+            "example": "2022-01-01"
+          }
+        }
+      },
+      "postArticlesRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "記事タイトル",
+            "type": "string",
+            "example": "記事タイトル",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "description": {
+            "description": "記事の内容",
+            "type": "string",
+            "example": "記事の内容記事の内容記事の内容"
+          },
+          "topics": {
+            "description": "記事のトピックIDのリスト",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "topics"
+        ]
+      },
+      "postArticlesResponse": {
+        "$ref": "#/components/schemas/ArticleDetail"
+      },
+      "putArticleRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "記事タイトル",
+            "type": "string",
+            "example": "記事タイトル",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "description": {
+            "description": "記事の内容",
+            "type": "string",
+            "example": "記事の内容記事の内容記事の内容"
+          },
+          "topics": {
+            "description": "記事のトピックIDのリスト",
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "topics"
+        ]
+      },
+      "putArticleResponse": {
+        "$ref": "#/components/schemas/ArticleDetail"
+      },
+      "deleteArticleResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "description": "成功フラグ",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "400Response": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "description": "エラーメッセージ",
+            "type": "string",
+            "example": "リクエストパラメータが不正です。"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "postArticlesRequest": {
+        "description": "記事登録のリクエスト",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/postArticlesRequest"
+            }
+          }
+        }
+      },
+      "putArticleRequest": {
+        "description": "記事編集のリクエスト",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/putArticleRequest"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "getArticlesResponse": {
+        "description": "記事一覧取得のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/getArticlesResponse"
+            }
+          }
+        }
+      },
+      "postArticlesResponse": {
+        "description": "記事登録のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/postArticlesResponse"
+            }
+          }
+        }
+      },
+      "getArticleDetailResponse": {
+        "description": "記事詳細取得のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ArticleDetail"
+            }
+          }
+        }
+      },
+      "putArticleResponse": {
+        "description": "記事編集のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/putArticleResponse"
+            }
+          }
+        }
+      },
+      "deleteArticleResponse": {
+        "description": "記事削除のレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/deleteArticleResponse"
+            }
+          }
+        }
+      },
+      "400Response": {
+        "description": "400エラーのレスポンス",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/400Response"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "offset": {
+        "in": "query",
+        "name": "offset",
+        "description": "取得開始のスキップ数",
+        "schema": {
+          "type": "integer"
+        },
+        "example": 1,
+        "required": true
+      },
+      "limit": {
+        "in": "query",
+        "name": "limit",
+        "description": "データの取得数",
+        "schema": {
+          "type": "integer"
+        },
+        "example": 1,
+        "required": true
+      },
+      "articleId": {
+        "in": "path",
+        "name": "articleId",
+        "description": "動画ID",
+        "schema": {
+          "type": "integer"
+        },
+        "example": 1,
+        "required": true
+      }
+    }
+  }
+}
